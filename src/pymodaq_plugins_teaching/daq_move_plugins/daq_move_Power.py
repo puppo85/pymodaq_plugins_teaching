@@ -37,6 +37,7 @@ class DAQ_Move_Power(DAQ_Move_base):
         self.controller: Spectrometer = None
 
         #TODO declare here attributes you want/need to init with a default value
+        # I modify a comment
         pass
 
     def get_actuator_value(self):
