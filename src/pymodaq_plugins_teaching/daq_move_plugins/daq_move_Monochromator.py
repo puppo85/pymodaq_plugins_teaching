@@ -136,7 +136,7 @@ class DAQ_Move_Monochromator(DAQ_Move_base):
         ----------
         value: (float) value of the absolute target positioning
         """
-
+        #a comment to test git
         value = self.check_bound(value)  #if user checked bounds, the defined bounds are applied here
         self.target_value = value
         value = self.set_position_with_scaling(value)  # apply scaling if the user specified one
