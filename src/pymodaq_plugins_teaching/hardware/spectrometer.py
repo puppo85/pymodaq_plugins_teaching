@@ -14,7 +14,7 @@ class Spectrometer:
 
     Allows to change the used grating, to move the grating by setting the central wavelength and get the data out of it
     """
-    gratings = ['G300', 'G1200']
+    gratings = ['G300', 'G1200']#class attribute, not instanta
 
     Nx = 256
     infos = 'Spectrometer Controller Wrapper 0.1.0'
@@ -22,8 +22,8 @@ class Spectrometer:
     def __init__(self):
         super().__init__()
 
-        self._amp = 20
-        self._noise = 0.001
+        self._amp = 15
+        self._noise = 0.5
         self._wh = 2
         self._grating = self.gratings[0]
 

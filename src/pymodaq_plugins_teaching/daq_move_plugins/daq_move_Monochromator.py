@@ -36,8 +36,12 @@ class DAQ_Move_Monochromator(DAQ_Move_base):
     _epsilon: Union[float, List[float]] = 0.1
     data_actuator_type = DataActuatorType.DataActuator  # wether you use the new data style for actuator otherwise set this
     # as  DataActuatorType.float  (or entirely remove the line)
-
-    params = [   # TODO for your custom plugin: elements to be added here as dicts in order to control your custom stage
+    # there is unit suffic
+    params = [   {'title': 'tau (ms)', 'name': 'tau', 'type': 'float', 'value': 666.0, 'min': 1.0, 'max': 3000.0,
+                  'suffix': 'ms','readonly': False,'visible': True},
+                 {'title': 'Gratings (l/mm)', 'name': 'grating', 'type': 'list',
+                  'limits': Spectrometer.gratings, 'value': Spectrometer.gratings[0], 'readonly': False,'visible': True}
+                 #this is possible only due to how the Spectrometer mock class is written, before the CLass statemet
                 ] + comon_parameters_fun(is_multiaxes, axis_names=_axis_names, epsilon=_epsilon)
     # _epsilon is the initial default value for the epsilon parameter allowing pymodaq to know if the controller reached
     # the target value. It is the developer responsibility to put here a meaningful value
@@ -48,6 +52,8 @@ class DAQ_Move_Monochromator(DAQ_Move_base):
         self.controller: Spectrometer = None
 
         #TODO declare here attributes you want/need to init with a default value
+        #set the tau paramter to a value of 665 by default
+
         pass
 
     def get_actuator_value(self):
@@ -97,8 +103,15 @@ class DAQ_Move_Monochromator(DAQ_Move_base):
             # if the motors connected to the controller are of different type (mm, µm, nm, , etc...)
             # see BrushlessDCMotor from the thorlabs plugin for an exemple
 
-        elif param.name() == "a_parameter_you've_added_in_self.params":
-           self.controller.your_method_to_apply_this_param_change()
+        elif param.name() == "tau":
+            #print(param.value())
+            #print('tau from hardware',self.controller.tau)
+            self.controller.tau=param.value()/1000.0  # set the tau value in seconds
+
+        elif param.name() == "grating":
+            print(self.controller.grating)
+            self.controller.grating=param.value()
+            print('new grating',self.controller.grating)
         else:
             pass
 
@@ -122,9 +135,16 @@ class DAQ_Move_Monochromator(DAQ_Move_base):
             initialized = self.controller.open_communication()  # todo
             # todo: enter here whatever is needed for your controller initialization and eventual
             #  opening of the communication channel
+
+
         else:
             self.controller = controller
             initialized = True
+
+        if initialized:
+            self.settings.child('tau').setValue(self.controller.tau*1000.0)
+            self.settings.child('grating').setLimits(self.controller.gratings)
+            self.settings.child('grating').setValue(self.controller.grating)
 
         info = "Whatever info you want to log"
         return info, initialized
