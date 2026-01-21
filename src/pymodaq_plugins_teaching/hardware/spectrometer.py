@@ -22,8 +22,8 @@ class Spectrometer:
     def __init__(self):
         super().__init__()
 
-        self._amp = 10
-        self._noise = 0.5
+        self._amp = 20
+        self._noise = 0.001
         self._wh = 2
         self._grating = self.gratings[0]
 
@@ -126,6 +126,7 @@ class Spectrometer:
             self._target_lambda = value
         else:
             self._target_lambda = self._lambda + value
+            #self._target_lambda = self.get_wavelength() + value
 
         self._init_value = self._lambda
         if self._init_value != self._target_lambda:
