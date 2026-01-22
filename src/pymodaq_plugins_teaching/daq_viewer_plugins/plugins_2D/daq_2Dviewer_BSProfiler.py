@@ -18,6 +18,8 @@ class DAQ_2DViewer_BSProfiler(DAQ_2DViewer_BSCamera):
         {'title': 'plot Dmajor', 'name': 'plot2', 'type': 'bool', 'value': True},
         {'title': 'plot Dminor', 'name': 'plot3', 'type': 'bool', 'value': True},
     ]
+    
+
     def grab_data(self, Naverage=1, **kwargs):
         """Start a grab from the detector
 
